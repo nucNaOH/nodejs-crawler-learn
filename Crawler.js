@@ -36,36 +36,44 @@ function getPage(news_type, i, pagenum) {
         if (err || !res.ok) {
             return;
         }
-        eval(res.text);
-        for (var j = 0; j < pagenum; j++) {
-            // console.log(specialcnsdata.docs[j].url);
-            if (specialcnsdata && specialcnsdata.docs[j] && specialcnsdata.docs[j].url) {
-                ;
-            } else {
-                continue;
+        try {
+            eval(res.text);
+
+            // eval(res.text);
+            for (var j = 0; j < pagenum; j++) {
+                if (specialcnsdata && specialcnsdata.docs[j] && specialcnsdata.docs[j].url) {
+                    console.log(specialcnsdata.docs[j].url);
+                } else {
+                    continue;
+                }
+                var uurrll = specialcnsdata.docs[j].url;
+                var filepath = '';
+                if (dataset.current % 2) {
+                    filepath = dataset.train_path + news.types[news_type] + '/' + parseInt(dataset.current / 2 + 1);
+                } else {
+                    filepath = dataset.test_path + news.types[news_type] + '/' + dataset.current / 2;
+                }
+                dataset.current++;
+                var stream = fs.createWriteStream(filepath);
+                var req = superagent.get(uurrll);
+                req.pipe(iconv.decodeStream('gb2312')).pipe(iconv.encodeStream('utf8')).pipe(stream);
+                console.log(filepath);
+
             }
-            var uurrll = specialcnsdata.docs[j].url;
-            var filepath = '';
-            if (dataset.current % 2) {
-                filepath = dataset.train_path + news.types[news_type] + '/' + parseInt(dataset.current / 2 + 1);
-            } else {
-                filepath = dataset.test_path + news.types[news_type] + '/' + dataset.current / 2;
-            }
-            dataset.current++;
-            var stream = fs.createWriteStream(filepath);
-            var req = superagent.get(uurrll);
-            req.pipe(iconv.decodeStream('gb2312')).pipe(iconv.encodeStream('utf8')).pipe(stream);
-            console.log(filepath);
+        } catch (error) {
+            console.log(error);
         }
 
     });
 }
 
 var Crawler = function (news_type, pager, pagenum) {
-    var init = 0;
+    var init = 410;
     var t = setInterval(function () {
         getPage(news_type, init, pagenum);
         init++;
+        console.log('---------------------------------------------');
+        console.log(init);
         if (init >= pager) {
             clearInterval(t);
         }
@@ -74,9 +82,11 @@ var Crawler = function (news_type, pager, pagenum) {
 
 // 自动执行
 (function () {
-    dataset.current = 1;
+    dataset.current = 7800;
 
-    Crawler(0, 1000, 20);
+    //已执行：0
+    //
+    Crawler(1, 1050, 20);
 
     // getPage(0, 10, 20);
 
