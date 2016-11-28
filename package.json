@@ -12,6 +12,8 @@
     "cheerio": "^0.22.0",
     "express": "^4.14.0",
     "iconv-lite": "^0.4.15",
+    "mongoose": "^4.7.0",
+    "nodejieba": "^2.2.4",
     "superagent": "^3.0.0"
   }
 }

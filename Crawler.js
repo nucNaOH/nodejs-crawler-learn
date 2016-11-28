@@ -6,6 +6,8 @@ var fs = require('fs');
 const StringDecoder = require('string_decoder').StringDecoder;
 const decoder = new StringDecoder('utf8');
 
+// var jieba = require('nodejieba');
+
 var app = express();
 var dataset = {
     train_path: '/TextCategorization/train_data_set/',
@@ -68,7 +70,7 @@ function getPage(news_type, i, pagenum) {
 }
 
 var Crawler = function (news_type, pager, pagenum) {
-    var init = 410;
+    var init = 0;
     var t = setInterval(function () {
         getPage(news_type, init, pagenum);
         init++;
@@ -82,11 +84,12 @@ var Crawler = function (news_type, pager, pagenum) {
 
 // 自动执行
 (function () {
-    dataset.current = 7800;
+    dataset.current = 1;
 
-    //已执行：0
-    //
-    Crawler(1, 1050, 20);
+
+    //已执行：'cj', 'auto', 'yl', 'ty', 'cul',
+    //'it','gj'，jk edu mil
+    Crawler(5, 1050, 20);
 
     // getPage(0, 10, 20);
 
