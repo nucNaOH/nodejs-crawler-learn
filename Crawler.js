@@ -70,7 +70,7 @@ function getPage(news_type, i, pagenum) {
 }
 
 var Crawler = function (news_type, pager, pagenum) {
-    var init = 0;
+    var init = 2000;
     var t = setInterval(function () {
         getPage(news_type, init, pagenum);
         init++;
@@ -79,17 +79,17 @@ var Crawler = function (news_type, pager, pagenum) {
         if (init >= pager) {
             clearInterval(t);
         }
-    }, 3000);
+    }, 4000);
 };
 
 // 自动执行
 (function () {
-    dataset.current = 1;
+    dataset.current = 46000;
 
 
     //已执行：'cj', 'auto', 'yl', 'ty', 'cul',
     //'it','gj'，jk edu mil
-    Crawler(5, 1050, 20);
+    Crawler(2, 2500, 20);
 
     // getPage(0, 10, 20);
 

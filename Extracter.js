@@ -20,6 +20,7 @@ var news = {
 }
 
 // 数据库设计
+// Testing  Training
 var NewsTraining = mongoose.model('Testing', {
     type: String,
     filepath: String,
@@ -38,8 +39,8 @@ function getNewsInfo(type, path, callback) {
         var $ = cheerio.load(data.toString());
         var content = $('.left_zw p').clone().children().remove().end().text().replace(/\r|\n|/g, '').trim();
         var title = $('h1').text().replace(/\r|\n|/g, '').trim();
-
-        if (content.length < 20) {
+        // 过滤掉文章长度小于200个字符的新闻
+        if (content.length < 200) {
             // console.log('xxxxxxxxxxxx');
             console.log('------------------');
         } else {
@@ -47,7 +48,7 @@ function getNewsInfo(type, path, callback) {
             console.log(path);
             new_single.save(function (err) {
                 if (err) {
-                    console.log('-----------------王楠--------------------');
+                    console.log('-----------------楠哥保佑--------------------');
                 } else {
                     // console.log('success');
                 }
@@ -69,12 +70,16 @@ function getAllNews() {
     // 'cul', 'mil', 'it'
     // 'gj', 'jk', 'edu'
     // , 'ty'
-    ['ty'].forEach(function (type) {
-        for (var i = 1; i < 11000; i++) {
-            var p = dataset.test_path + type + '/' + i;
-            getNewsInfo(type, p, function (data) {
+    ['yl'].forEach(function (type) {
+        for (var i = 23000; i < 27000; i++) {
+            var p_traing = dataset.test_path + type + '/' + i;
+            getNewsInfo(type, p_traing, function (data) {
                 // console.log(data.filepath);
             });
+            // var p_testing = dataset.test_path + type + '/' + i;
+            // getNewsInfo(type, p_testing, function (data) {
+            //     // console.log(data.filepath);
+            // });
         }
     }, this);
 }
